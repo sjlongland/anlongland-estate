@@ -60,8 +60,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'estate',
-        'USER': 'EbVj^Vf(ZP7ct7p2XN^y7Wwky7bF@gOB',
-        'PASSWORD': 'db_user_password',
+        'USER': 'estate',
+        'PASSWORD': 'EbVj^Vf(ZP7ct7p2XN^y7Wwky7bF@gOB',
         'HOST': ''
     }
 }

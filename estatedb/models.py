@@ -81,6 +81,9 @@ class Item(models.Model):
             self.code = self.location.get_new_code()
         super(Item, self).save(*args, **kwargs)
 
+    class Meta:
+        ordering        = ['code', 'name']
+
 class Photo(models.Model):
     item                = models.ForeignKey(Item)
     photo               = thumbs.ImageWithThumbsField(

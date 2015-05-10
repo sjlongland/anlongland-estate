@@ -19,23 +19,17 @@
 
 {% if child_items %}
 <hr />
-<table>
-	<thead>
-		<tr>
-			<th>Code</th>
-			<th>Name</th>
-			<th>Available</th>
-		</tr>
-	</thead>
-	<tbody>
 {% for child in child_items %}
-		<tr>
-			<td><a href="{% url 'item' child.id %}">{{child.code}}</a></td>
-			<td><a href="{% url 'item' child.id %}">{{child.name}}</a></td>
-			<td>{% if child.claimant %}✘{%else%}✔{% endif %}</td>
-		</tr>
+<div>
+	<a href="{% url 'item' child.id %}">
+		{% if child.photo %}
+		<img src="/{{ child.photo.photo.url_100x100 }}" />
+		{% else %}
+		&lt;NO PHOTO&gt;
+		{% endif %}<br />
+		[{{child.code}}] {{child.name}}
+		{% if child.claimant %}✘{%else%}✔{% endif %}</a>
+</div>
 {% endfor %}
-	</tbody>
-</table>
 {% endif %}
 {% endblock %}

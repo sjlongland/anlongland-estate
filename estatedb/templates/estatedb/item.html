@@ -19,7 +19,7 @@
 <h1>Photos</h1>
 
 {% for photo in photos %}
-<a href="/{{ photo.photo.url }}"><img src="/{{ photo.photo.url_100x100 }}" /></a>
+<a href="/{{ photo.photo.url }}"><img src="/{{ photo.photo.url_400x400 }}" /></a>
 {% endfor %}
 {% endif %}
 {% endblock %}

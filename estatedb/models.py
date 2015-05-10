@@ -65,6 +65,12 @@ class Item(models.Model):
     contents            = models.ForeignKey(Location, null=True,
             blank=True, related_name='parent_item')
 
+    @property
+    def photo(self):
+        if self.photo_set.count():
+            return self.photo_set.all()[0]
+        return None
+
     def __unicode__(self):
         return self.name
 

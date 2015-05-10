@@ -22,7 +22,11 @@
 		{% endfor %}
 	</ul>
 	{% for item in location.child_items.all %}
-	<div style="border: 1px solid black; padding: 2em;">
+	{% if item.claimant %}
+	<div style="border: 1px solid black; padding: 2em; background-color: #fee; color: #000;">
+	{% else %}
+	<div style="border: 1px solid black; padding: 2em; background-color: #efe; color: #000;">
+	{% endif %}
 	<a name="item{{item.id}}"><h3>[{{item.code}}] {{ item.name }} ({{item.article_type.name}})</h3></a>
 
 	<p>{{item.description}}</p>
@@ -40,7 +44,6 @@
 	</p>
 	</div>
 	{% endfor %}
-	<hr style="page-break-after: always;" />
 </div>
 {% endfor %}
 {% endblock %}

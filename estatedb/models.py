@@ -2,6 +2,8 @@ from django.db import models
 import mptt.models
 import thumbs
 import django.contrib.auth.models
+import base64
+import logging
 
 class Location(mptt.models.MPTTModel):
     parent = mptt.models.TreeForeignKey(
@@ -84,3 +86,15 @@ class Photo(models.Model):
     photo               = thumbs.ImageWithThumbsField(
                             upload_to='photos', sizes=(
                                 (100,100),(400,400)))
+    @property
+    def data_url(self):
+        try:
+            thumbnail = '%s.400x400.%s' % tuple(
+                    self.photo.name.split('.',1))
+            photo_data = self.photo.storage.open(
+                    thumbnail, mode='rb').read()
+        except:
+            logging.exception('Failed to read photo %s', self.photo.name)
+            photo_data = 'broken-image'
+        # TODO: content type
+        return 'data:image/jpeg;base64,' + base64.b64encode(photo_data)

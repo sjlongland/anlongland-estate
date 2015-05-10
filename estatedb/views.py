@@ -17,6 +17,17 @@ def index(request):
     }
     return render(request, 'estatedb/index.html', context)
 
+def all(request):
+    if not request.user.is_authenticated():
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+
+    context = {
+            'title': 'Estate index',
+            'authenticated_user': request.user,
+            'locations': models.Location.objects.all(),
+    }
+    return render(request, 'estatedb/all.html', context)
+
 def location(request, location_id):
     if not request.user.is_authenticated():
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))

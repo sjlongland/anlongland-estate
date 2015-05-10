@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<a name="index"><h2>Location index</h2></a>
+<ul>
+{% for location in locations %}
+	<li><a href="#location{{location.id}}">{{location.name}}</a></li>
+{% endfor %}
+</ul>
+<hr style="page-break-after: always;" />
+
+{% for location in locations %}
+<a name="location{{location.id}}"><h2>{{ location.name }}</h2></a>
+	<ul>
+		{% for item in location.child_items.all %}
+		<li><a href="#item{{item.id}}">{{ item.name }}</a></li>
+		{% endfor %}
+		{% for loc in location.children.all %}
+		<li><em>See also:</em>
+			<a href="#location{{loc.id}}">{{loc.name}}</a></li>
+		{% endfor %}
+	</ul>
+	{% for item in location.child_items.all %}
+	<a name="item{{item.id}}"><h3>[{{item.code}}] {{ item.name }} ({{item.article_type.name}})</h3></a>
+
+	<p>{{item.description}}</p>
+	
+	{% if item.claimant %}
+	<p>This item has been claimed.</p>
+	{% else %}
+	<p>This item is available.</p>
+	{% endif %}
+
+	<p>
+		{% for photo in item.photo_set.all %}
+		<img src="{{photo.data_url}}" />
+		{% endfor %}
+	</p>
+	{% endfor %}
+	<hr style="page-break-after: always;" />
+{% endfor %}
+{% endblock %}

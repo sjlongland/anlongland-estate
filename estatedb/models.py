@@ -2,9 +2,6 @@ from django.db import models
 import mptt.models
 import django.contrib.auth.models
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
-
 class Location(mptt.models.MPTTModel):
     parent = mptt.models.TreeForeignKey(
             'self', null=True, blank=True, related_name='children')
@@ -39,7 +36,6 @@ class Location(mptt.models.MPTTModel):
         next_code = self.next_code + 1
         while self.child_items.filter(\
                 code__exact=self._get_new_code(next_code)).count() > 0:
-            logging.info('%d in use', next_code)
             next_code += 1
         self.next_code = next_code
         self.save()
@@ -72,9 +68,7 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         if not bool(self.code):
-            logging.info('Generating new code')
             self.code = self.location.get_new_code()
-            logging.info('New code: %s', self.code)
         super(Item, self).save(*args, **kwargs)
 
 class Photo(models.Model):

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="style.css" />
+		<title>{{ title }}</title>
+	</head>
+
+	<body>
+		<h1>{{ title }}</h1>
+		{% if authenticated_user %}
+		<p>Logged in as {{ authenticated_user }}, <a href="{% url 'logout' %}">Logout</a></p>
+		{% endif %}
+		<div id="content">
+			{% block content %}{% endblock %}
+		</div>
+	</body>
+</html>

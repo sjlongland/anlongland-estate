@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if parent %}
+<a href="{% url 'location' parent.id %}">&larr; {{ parent.name }}</a>
+{% endif %}
+{% if parent_item %}
+<a href="{% url 'item' parent_item.id %}">&larr; {{ parent_item.name }}</a>
+{% endif %}
+<a href="/">&uarr; Top</a>
+
+{% if child_locations %}
+<ul>
+	{% for child in child_locations %}
+	<li><a href="{% url 'location' child.id %}">{{ child.name }}</a>
+	{% endfor %}
+</ul>
+{% endif %}
+
+{% if child_items %}
+<hr />
+<table>
+	<thead>
+		<tr>
+			<th>Code</th>
+			<th>Name</th>
+			<th>Available</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for child in child_items %}
+		<tr>
+			<td><a href="{% url 'item' child.id %}">{{child.code}}</a></td>
+			<td><a href="{% url 'item' child.id %}">{{child.name}}</a></td>
+			<td>{% if child.claimant %}✘{%else%}✔{% endif %}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endblock %}

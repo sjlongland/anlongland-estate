@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="{% url 'location' item.location.id %}">&larr; {{ item.location.name }}</a>
+{% if item.contents %}
+<a href="{% url 'location' item.contents.id %}">&rarr; {{ item.contents.name }}</a>
+{% endif %}
+
+{% if item.claimant %}
+<p>This item has been claimed.</p>
+{% else %}
+<p>This item is available.</p>
+{% endif %}
+
+<p>{{item.description}}</p>
+
+{% if photos %}
+<hr />
+<h1>Photos</h1>
+
+{% for photo in photos %}
+<a href="/{{ photo.photo.url }}"><img src="/{{ photo.photo.url_100x100 }}" /></a>
+{% endfor %}
+{% endif %}
+{% endblock %}

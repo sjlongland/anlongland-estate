@@ -9,7 +9,7 @@ from PIL import Image
 from django.core.files.base import ContentFile
 import cStringIO
 
-def generate_thumb(img, thumb_size, format):
+def generate_thumb(img, thumb_size, format, fit):
     """
     Generates a thumbnail image and returns a ContentFile object with the thumbnail
     
@@ -32,21 +32,33 @@ def generate_thumb(img, thumb_size, format):
         
     # get size
     thumb_w, thumb_h = thumb_size
+
     # If you want to generate a square thumbnail
     if thumb_w == thumb_h:
         # quad
         xsize, ysize = image.size
-        # get minimum size
-        minsize = min(xsize,ysize)
-        # largest square possible in the image
-        xnewsize = (xsize-minsize)/2
-        ynewsize = (ysize-minsize)/2
-        # crop it
-        image2 = image.crop((xnewsize, ynewsize, xsize-xnewsize, ysize-ynewsize))
-        # load is necessary after crop                
-        image2.load()
-        # thumbnail of the cropped image (with ANTIALIAS to make it look better)
-        image2.thumbnail(thumb_size, Image.ANTIALIAS)
+        if fit:
+            # Are we portrait or landscape?
+            if xsize > ysize:
+                # Landscape
+                thumb_h = (xsize * thumb_h) / ysize
+            else:
+                # Portrait
+                thumb_w = (ysize * thumb_w) / xsize
+            image2 = image
+            image2.thumbnail((thumb_w,thumb_h), Image.ANTIALIAS)
+        else:
+            # get minimum size
+            minsize = min(xsize,ysize)
+            # largest square possible in the image
+            xnewsize = (xsize-minsize)/2
+            ynewsize = (ysize-minsize)/2
+            # crop it
+            image2 = image.crop((xnewsize, ynewsize, xsize-xnewsize, ysize-ynewsize))
+            # load is necessary after crop
+            image2.load()
+            # thumbnail of the cropped image (with ANTIALIAS to make it look better)
+            image2.thumbnail(thumb_size, Image.ANTIALIAS)
     else:
         # not quad
         image2 = image
@@ -67,6 +79,7 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
     def __init__(self, *args, **kwargs):
         super(ImageWithThumbsFieldFile, self).__init__(*args, **kwargs)
         self.sizes = self.field.sizes
+        self.fit = self.field.fit
         
         if self.sizes:
             def get_size(self, size):
@@ -91,7 +104,8 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
                 thumb_name = '%s.%sx%s.%s' % (split[0],w,h,split[1])
                 
                 # you can use another thumbnailing function if you like
-                thumb_content = generate_thumb(content, size, split[1])
+                thumb_content = generate_thumb(content, size,
+                        split[1], self.fit)
                 
                 thumb_name_ = self.storage.save(thumb_name, thumb_content)        
                 
@@ -155,10 +169,11 @@ class ImageWithThumbsField(ImageField):
     Add method to regenerate thubmnails
     
     """
-    def __init__(self, verbose_name=None, name=None, width_field=None, height_field=None, sizes=None, **kwargs):
+    def __init__(self, verbose_name=None, name=None, width_field=None, height_field=None, sizes=None, fit=False, **kwargs):
         self.verbose_name=verbose_name
         self.name=name
         self.width_field=width_field
         self.height_field=height_field
         self.sizes = sizes
+        self.fit = fit
         super(ImageField, self).__init__(**kwargs)

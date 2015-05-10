@@ -85,7 +85,7 @@ class Photo(models.Model):
     item                = models.ForeignKey(Item)
     photo               = thumbs.ImageWithThumbsField(
                             upload_to='photos', sizes=(
-                                (100,100),(400,400)))
+                                (100,100),(400,400)), fit=True)
     @property
     def data_url(self):
         try:

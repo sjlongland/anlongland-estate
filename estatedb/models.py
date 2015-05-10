@@ -1,5 +1,6 @@
 from django.db import models
 import mptt.models
+import thumbs
 import django.contrib.auth.models
 
 class Location(mptt.models.MPTTModel):
@@ -26,7 +27,7 @@ class Location(mptt.models.MPTTModel):
 
     class Meta:
         unique_together = ('parent','name')
-        ordering        = ['name']
+        ordering        = ['full_name']
 
     def _get_new_code(self, next_code=None):
         return u'%s_%08d' % (self.code_prefix, next_code or self.next_code)
@@ -73,4 +74,6 @@ class Item(models.Model):
 
 class Photo(models.Model):
     item                = models.ForeignKey(Item)
-    photo               = models.ImageField()
+    photo               = thumbs.ImageWithThumbsField(
+                            upload_to='photos', sizes=(
+                                (100,100),(400,400)))

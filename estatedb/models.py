@@ -30,7 +30,8 @@ class Location(mptt.models.MPTTModel):
         ordering        = ['full_name']
 
     def _get_new_code(self, next_code=None):
-        return u'%s_%08d' % (self.code_prefix, next_code or self.next_code)
+        return u'%s-%03d' % (self.code_prefix,
+                next_code or self.next_code)
 
     def get_new_code(self):
         code = self._get_new_code()

@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+<div style="border: 1px solid black; padding: 2em; page-break-after: always;">
 <a name="index"><h2>Location index</h2></a>
 <ul>
 {% for location in locations %}
 	<li><a href="#location{{location.id}}">{{location.name}}</a></li>
 {% endfor %}
 </ul>
-<hr style="page-break-after: always;" />
+</div>
 
 {% for location in locations %}
+<div style="border: 1px solid black; padding: 2em; page-break-after: always;">
 <a name="location{{location.id}}"><h2>{{ location.name }}</h2></a>
 	<ul>
 		{% for item in location.child_items.all %}
@@ -20,6 +22,7 @@
 		{% endfor %}
 	</ul>
 	{% for item in location.child_items.all %}
+	<div style="border: 1px solid black; padding: 2em;">
 	<a name="item{{item.id}}"><h3>[{{item.code}}] {{ item.name }} ({{item.article_type.name}})</h3></a>
 
 	<p>{{item.description}}</p>
@@ -35,7 +38,9 @@
 		<img src="{{photo.data_url}}" />
 		{% endfor %}
 	</p>
+	</div>
 	{% endfor %}
 	<hr style="page-break-after: always;" />
+</div>
 {% endfor %}
 {% endblock %}

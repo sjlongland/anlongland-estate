@@ -20,7 +20,7 @@
 {% if child_items %}
 <hr />
 {% for child in child_items %}
-<div>
+<div style="display: inline-block;">
 	<a href="{% url 'item' child.id %}">
 		{% if child.photo %}
 		<img src="/{{ child.photo.photo.url_100x100 }}" />

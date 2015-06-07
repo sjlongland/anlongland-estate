@@ -12,7 +12,7 @@
 	<p>
 		{% for photo in item.photo_set.all %}
 		<a href="{{photo.photo.url}}"><img
-			src="{{photo.data_url}}" alt="" /></a>
+			src="/{{ photo.photo.url_400x400 }}" alt="" /></a>
 		{% endfor %}
 	</p>
 	<p>Claimant: {{item.claimant.get_full_name}}

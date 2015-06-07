@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 import estatedb.views
-#from django.conf import settings
-#from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     # Examples:
@@ -18,4 +18,13 @@ urlpatterns = patterns('',
         estatedb.views.photo, name='photo'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
-)# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
+if settings.DEBUG == True:
+    urlpatterns += patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT,
+        }),
+    )

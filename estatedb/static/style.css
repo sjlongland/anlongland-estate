@@ -46,3 +46,8 @@
 	color: black;
 	background-color: #f99;
 }
+
+div.item.item_thumb.item_taken > div.item_thumb_txt > *
+{
+	text-decoration: line-through;
+}

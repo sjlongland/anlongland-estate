@@ -38,6 +38,21 @@ def location(request, location_id):
     except models.Location.DoesNotExist:
         raise Http404("Location does not exist")
 
+    siblings = list(models.Location.objects.filter(
+            parent=location.parent).order_by('full_name'))
+    sibling_ids = [l.id for l in siblings]
+    my_order = sibling_ids.index(location.id)
+
+    if my_order > 0:
+        prev_loc = siblings[my_order-1]
+    else:
+        prev_loc = None
+
+    if my_order < len(sibling_ids)-1:
+        next_loc = siblings[my_order+1]
+    else:
+        next_loc = None
+
     if location.parent_item.count():
         parent_item = location.parent_item.all()[0]
     else:
@@ -45,6 +60,8 @@ def location(request, location_id):
 
     return render(request, 'estatedb/location.html', {
         'location': location,
+        'prev_loc': prev_loc,
+        'next_loc': next_loc,
         'title': 'Location: %s' % location.name,
         'authenticated_user': request.user,
         'parent': location.parent,
@@ -66,8 +83,25 @@ def item(request, item_id):
     except models.Item.DoesNotExist:
         raise Http404("Item does not exist")
 
+    siblings = list(models.Item.objects.filter(
+            location=item.location).order_by('code'))
+    sibling_ids = [i.id for i in siblings]
+    my_order = sibling_ids.index(item.id)
+
+    if my_order > 0:
+        prev_item = siblings[my_order-1]
+    else:
+        prev_item = None
+
+    if my_order < len(sibling_ids)-1:
+        next_item = siblings[my_order+1]
+    else:
+        next_item = None
+
     return render(request, 'estatedb/item.html', {
         'title': u'Item %s: %s' % (item.code, item.name),
+        'prev_item': prev_item,
+        'next_item': next_item,
         'authenticated_user': request.user,
         'item': item,
         'photos': item.photo_set.all(),

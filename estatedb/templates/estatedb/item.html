@@ -1,10 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 
-<a href="{% url 'location' item.location.id %}">&larr; {{ item.location.name }}</a>
-{% if item.contents %}
-<a href="{% url 'location' item.contents.id %}">&rarr; {{ item.contents.name }}</a>
+<div id="l1_nav">
+<a style="width: 50%" href="/">&Uarr; Index</a>
+<a style="width: 50%" href="{% url 'location' item.location.id %}">&uarr; {{ item.location.name }}</a>
+</div>
+
+<div id="l2_nav">
+
+{% if prev_item %}
+<a style="width: 50%" href="{% url 'item' prev_item.id %}">&larr; {{prev_item.name}}</a>
+{% else %}
+<span style="width: 50%">&nbsp;</span>
 {% endif %}
+
+{% if next_item %}
+<a style="width: 50%" href="{% url 'item' next_item.id %}">{{next_item.name}} &rarr;</a>
+{% else %}
+<span style="width: 50%">&nbsp;</span>
+{% endif %}
+
+</div>
 
 {% if item.claimant %}
 <p class="item_availability item_taken">This item has been claimed.</p>

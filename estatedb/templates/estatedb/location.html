@@ -1,13 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if parent %}
-<a href="{% url 'location' parent.id %}">&larr; {{ parent.name }}</a>
+<div id="l1_nav">
+
+{% if prev_loc %}
+<a style="width: 25%" href="{% url 'location' prev_loc.id %}">&larr; {{prev_loc.name}}</a>
+{% else %}
+<span style="width: 20%">&nbsp;</span>
 {% endif %}
+
 {% if parent_item %}
-<a href="{% url 'item' parent_item.id %}">&larr; {{ parent_item.name }}</a>
+<a style="width: 20%" href="{% url 'item' parent_item.id %}">&uarr; {{ parent_item.name }}</a>
+{% else %}
+<span style="width: 20%">&nbsp;</span>
 {% endif %}
-<a href="/">&uarr; Top</a>
+
+<a style="width: 10%" href="/">&Uarr; Index</a>
+
+{% if parent %}
+<a style="width: 20%" href="{% url 'location' parent.id %}">&uarr; {{ parent.name }}</a>
+{% else %}
+<span style="width: 20%">&nbsp;</span>
+{% endif %}
+
+{% if next_loc %}
+<a style="width: 25%" href="{% url 'location' next_loc.id %}">{{next_loc.name}} &rarr;</a>
+{% else %}
+<span style="width: 20%">&nbsp;</span>
+{% endif %}
+
+</div>
 
 {% if child_locations %}
 <ul>

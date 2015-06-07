@@ -67,7 +67,7 @@ def item(request, item_id):
         raise Http404("Item does not exist")
 
     return render(request, 'estatedb/item.html', {
-        'title': 'Item: %s' % item.name,
+        'title': u'Item %s: %s' % (item.code, item.name),
         'authenticated_user': request.user,
         'item': item,
         'photos': item.photo_set.all(),

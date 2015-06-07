@@ -13,7 +13,7 @@ def index(request):
             'title': 'Estate index',
             'authenticated_user': request.user,
             'locations': models.Location.objects.filter(
-                parent__isnull=True)
+                parent__isnull=True).order_by('full_name')
     }
     return render(request, 'estatedb/index.html', context)
 
@@ -24,7 +24,8 @@ def all(request):
     context = {
             'title': 'Estate index',
             'authenticated_user': request.user,
-            'locations': models.Location.objects.all(),
+            'locations': \
+                    models.Location.objects.all().order_by('full_name'),
     }
     return render(request, 'estatedb/all.html', context)
 
@@ -49,7 +50,7 @@ def location(request, location_id):
         'parent': location.parent,
         'parent_item': parent_item,
         'child_locations': location.children.all(),
-        'child_items': location.child_items.all(),
+        'child_items': location.child_items.all().order_by('code'),
     })
 
 def photo(request, photo_id):

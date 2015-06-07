@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="/static/style.css" />
 		<title>{{ title }}</title>
 	</head>
 
@@ -10,8 +10,6 @@
 		{% if authenticated_user %}
 		<p>Logged in as {{ authenticated_user }}, <a href="{% url 'logout' %}">Logout</a></p>
 		{% endif %}
-		<div id="content">
-			{% block content %}{% endblock %}
-		</div>
+		{% block content %}{% endblock %}
 	</body>
 </html>

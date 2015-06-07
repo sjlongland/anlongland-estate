@@ -20,16 +20,26 @@
 {% if child_items %}
 <hr />
 {% for child in child_items %}
-<div style="display: inline-block; width: 120px; height: 120px; font-size: small; text-align: center;">
-	<a href="{% url 'item' child.id %}">
+
+<div class="item item_thumb
+	{% if child.claimant %}
+		item_taken
+	{% else %}
+		item_available
+	{% endif %}">
+	<div class="item_thumb_img">
+		<a href="{% url 'item' child.id %}">
 		{% if child.photo %}
-		<img src="/{{ child.photo.photo.url_100x100 }}" />
+			<img align="absmiddle" alt="" src="/{{ child.photo.photo.url_100x100 }}" />
 		{% else %}
-		&lt;NO PHOTO&gt;
-		{% endif %}<br />
+			&lt;NO PHOTO&gt;
+		{% endif %}</a>
+	</div>
+	<div class="item_thumb_txt"><a href="{% url 'item' child.id %}">
 		[{{child.code}}] {{child.name}}
-		{% if child.claimant %}✘{%else%}✔{% endif %}</a>
+	</a></div>
 </div>
+
 {% endfor %}
 {% endif %}
 {% endblock %}

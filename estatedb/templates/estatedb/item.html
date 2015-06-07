@@ -7,9 +7,9 @@
 {% endif %}
 
 {% if item.claimant %}
-<p>This item has been claimed.</p>
+<p class="item_availability item_taken">This item has been claimed.</p>
 {% else %}
-<p>This item is available.</p>
+<p class="item_availability item_available">This item is available.</p>
 {% endif %}
 
 <p>{{item.description}}</p>

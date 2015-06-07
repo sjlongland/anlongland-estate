@@ -1,0 +1,48 @@
+.item_availability
+{
+	text-align: center;
+	font-size: large;
+	padding: 1em;
+	border: 1px solid black;
+}
+
+.item
+{
+	padding: 1em;
+	border: 1px solid black;
+}
+
+.item_thumb
+{
+	display: inline-block;
+	width: 150px;
+	height: 150px;
+	font-size: small;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.item_thumb_img
+{
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+}
+
+.item_thumb_img > *
+{
+	vertical-align: middle;
+	text-align: center;
+}
+
+.item_available
+{
+	color: black;
+	background-color: #9f9;
+}
+
+.item_taken
+{
+	color: black;
+	background-color: #f99;
+}

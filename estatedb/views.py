@@ -84,6 +84,24 @@ def item(request, item_id):
     except models.Item.DoesNotExist:
         raise Http404("Item does not exist")
 
+    unclaimed = item.claimant is None
+    if not unclaimed:
+        mine = item.claimant.username == request.user.username
+    else:
+        mine = False
+
+    if request.method == 'POST':
+        if unclaimed and (request.POST['action'] == 'claim'):
+            item.claimant = request.user
+            item.save()
+            mine = True
+            unclaimed = False
+        elif mine and (request.POST['action'] == 'unclaim'):
+            item.claimant = None
+            item.save()
+            mine = False
+            unclaimed = True
+
     siblings = list(models.Item.objects.filter(
             location=item.location).order_by('code'))
     sibling_ids = [i.id for i in siblings]
@@ -105,6 +123,8 @@ def item(request, item_id):
         'next_item': next_item,
         'authenticated_user': request.user,
         'item': item,
+        'unclaimed': unclaimed,
+        'mine': mine,
         'photos': item.photo_set.all(),
         })
 

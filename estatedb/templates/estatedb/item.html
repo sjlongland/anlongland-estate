@@ -28,10 +28,24 @@
 
 </div>
 
-{% if item.claimant %}
-<p class="item_availability item_taken">This item has been claimed.</p>
+{% if unclaimed %}
+<div class="item_availability item_available">
+	This item is available.
+	<form method="post"><input type="hidden"
+		name="action" value="claim" />
+		{% csrf_token %}
+	<input type="submit" value="Claim" /></form>
+</div>
 {% else %}
-<p class="item_availability item_available">This item is available.</p>
+<div class="item_availability item_taken">
+This item has been claimed.
+	{% if mine %}
+		<form method="post"><input type="hidden"
+			name="action" value="unclaim" />
+		{% csrf_token %}
+		<input type="submit" value="Unclaim" /></form>
+	{% endif %}
+</div>
 {% endif %}
 
 <p>{{item.description}}</p>

@@ -9,15 +9,21 @@
 <div id="l2_nav">
 
 {% if prev_item %}
-<a style="width: 50%" href="{% url 'item' prev_item.id %}">&larr; {{prev_item.name}}</a>
+<a style="width: 33%" href="{% url 'item' prev_item.id %}">&larr; {{prev_item.name}}</a>
 {% else %}
-<span style="width: 50%">&nbsp;</span>
+<span style="width: 33%">&nbsp;</span>
+{% endif %}
+
+{% if item.contents %}
+<a style="width: 33%" href="{% url 'location' item.contents.id %}">&darr; {{item.contents.name}}</a>
+{% else %}
+<span style="width: 33%">&nbsp;</span>
 {% endif %}
 
 {% if next_item %}
-<a style="width: 50%" href="{% url 'item' next_item.id %}">{{next_item.name}} &rarr;</a>
+<a style="width: 33%" href="{% url 'item' next_item.id %}">{{next_item.name}} &rarr;</a>
 {% else %}
-<span style="width: 50%">&nbsp;</span>
+<span style="width: 33%">&nbsp;</span>
 {% endif %}
 
 </div>

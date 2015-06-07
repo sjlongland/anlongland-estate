@@ -70,7 +70,7 @@ class Item(models.Model):
     @property
     def photo(self):
         if self.photo_set.count():
-            return self.photo_set.all()[0]
+            return self.photo_set.all().order_by('order')[0]
         return None
 
     def __unicode__(self):
@@ -89,6 +89,8 @@ class Photo(models.Model):
     photo               = thumbs.ImageWithThumbsField(
                             upload_to='photos', sizes=(
                                 (100,100),(400,400)), fit=True)
+    order               = models.PositiveIntegerField(default=0)
+
     @property
     def data_url(self):
         try:

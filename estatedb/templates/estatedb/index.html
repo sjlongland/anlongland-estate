@@ -1,9 +1,17 @@
 {% extends "base.html" %}
+{% load mptt_tags %}
 {% block content %}
 <ul>
-	{% for location in locations %}
-	<li><a href="{% url 'location' location.id %}">{{ location.name }}</a></li>
-	{% endfor %}
+	{% recursetree locations %}
+	<li>
+		<a href="{% url 'location' node.id %}">{{ node.name }}</a>
+		{% if not node.is_leaf_node %}
+		<ul class="children">
+			{{ children }}
+		</ul>
+		{% endif %}
+        </li>
+	{% endrecursetree %}
 </ul>
 
 <a href="/all.html">All items</a>

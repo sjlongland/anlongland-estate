@@ -13,8 +13,7 @@ def index(request):
     context = {
             'title': 'Estate index',
             'authenticated_user': request.user,
-            'locations': models.Location.objects.filter(
-                parent__isnull=True).order_by('full_name'),
+            'locations': models.Location.objects.all().order_by('full_name'),
     }
     return render(request, 'estatedb/index.html', context)
 

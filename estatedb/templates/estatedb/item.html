@@ -33,8 +33,10 @@
 {% if photos %}
 <hr />
 
+<p style="text-align: center">
 {% for photo in photos %}
-<a href="/{{ photo.photo.url }}"><img src="/{{ photo.photo.url_400x400 }}" /></a>
+<a href="/{{ photo.photo.url }}"><img alt="" src="/{{ photo.photo.url_400x400 }}" /></a>
 {% endfor %}
+</p>
 {% endif %}
 {% endblock %}

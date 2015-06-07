@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="l1_nav">
+<a style="width: 50%" href="/">&Uarr; Index</a>
+</div>
+{% for item in claimed %}
+<div style="border: 1px solid black; padding: 2em;">
+	<a href="{% url 'item' item.id %}"><h3>[{{item.code}}] {{ item.name }} ({{item.article_type.name}})</h3></a>
+
+	<p>{{item.description}}</p>
+
+	<p>
+		{% for photo in item.photo_set.all %}
+		<a href="{{photo.photo.url}}"><img
+			src="{{photo.data_url}}" alt="" /></a>
+		{% endfor %}
+	</p>
+	<p>Claimant: {{item.claimant.get_full_name}}
+		({{item.claimant.username}})</p>
+</div>
+{% endfor %}
+{% endblock %}

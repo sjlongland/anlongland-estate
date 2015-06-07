@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 import django.contrib.auth.views
 import models
 
@@ -14,7 +14,7 @@ def index(request):
             'title': 'Estate index',
             'authenticated_user': request.user,
             'locations': models.Location.objects.filter(
-                parent__isnull=True).order_by('full_name')
+                parent__isnull=True).order_by('full_name'),
     }
     return render(request, 'estatedb/index.html', context)
 
@@ -74,6 +74,34 @@ def location(request, location_id):
 def photo(request, photo_id):
     if not request.user.is_authenticated():
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+
+def mine(request):
+    if not request.user.is_authenticated():
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+
+    claimed = models.Item.objects.filter(
+            claimant=request.user).order_by('code')
+
+    return render(request, 'estatedb/mine.html', {
+        'title': u'My items',
+        'authenticated_user': request.user,
+        'claimed': claimed,
+    })
+
+def claimed(request):
+    if not request.user.is_authenticated():
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('This requires superuser access')
+
+    claimed = models.Item.objects.exclude(
+            claimant__isnull=True).order_by('code')
+
+    return render(request, 'estatedb/claimed.html', {
+        'title': u'Claimed items',
+        'authenticated_user': request.user,
+        'claimed': claimed,
+    })
 
 def item(request, item_id):
     if not request.user.is_authenticated():

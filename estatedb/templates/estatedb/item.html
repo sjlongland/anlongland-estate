@@ -32,7 +32,6 @@
 
 {% if photos %}
 <hr />
-<h1>Photos</h1>
 
 {% for photo in photos %}
 <a href="/{{ photo.photo.url }}"><img src="/{{ photo.photo.url_400x400 }}" /></a>

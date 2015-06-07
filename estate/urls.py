@@ -18,6 +18,11 @@ urlpatterns = patterns('',
         estatedb.views.photo, name='photo'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^logout.html$', estatedb.views.logout, name='logout'),
+    url(r'^changepw.html$', estatedb.views.password_change,
+        name='password_change'),
+    url(r'^changedpw.html$', estatedb.views.password_change_done,
+        name='password_change_done'),
 )
 if settings.DEBUG == True:
     urlpatterns += patterns('',

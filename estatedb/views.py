@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import Http404
+import django.contrib.auth.views
 import models
 
 # Create your views here.
@@ -106,3 +107,15 @@ def item(request, item_id):
         'item': item,
         'photos': item.photo_set.all(),
         })
+
+def logout(request):
+    return django.contrib.auth.views.logout(request,
+            next_page='/',
+            template_name='estatedb/logged_out.html')
+def password_change(request):
+    return django.contrib.auth.views.password_change(request,
+            post_change_redirect='/changedpw.html',
+            template_name='estatedb/password_change_form.html')
+def password_change_done(request):
+    return django.contrib.auth.views.password_change_done(request,
+            template_name='estatedb/password_change_done.html')

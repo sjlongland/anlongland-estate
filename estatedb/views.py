@@ -176,7 +176,8 @@ def item(request, item_id):
         audit_log = None
 
     return render(request, 'estatedb/item.html', {
-        'title': u'Item %s: %s' % (item.code, item.name),
+        'title': u'Item %s: %s (%s)' % (item.code, item.name,
+            item.article_type),
         'prev_item': prev_item,
         'next_item': next_item,
         'authenticated_user': request.user,

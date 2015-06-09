@@ -59,4 +59,28 @@ This item has been claimed.
 {% endfor %}
 </p>
 {% endif %}
+
+{% if audit_log %}
+<hr />
+<h1>Audit log</h1>
+<ul>
+	{% for entry in audit_log %}
+	<li>
+		At {{ entry.date }}, {{ entry.user }} {{ entry.action }}:
+		{% if entry.state %}
+			<ul>
+				{% for field in entry.state %}
+				<li>{{ field.field }}:
+					{% if field.value != None %}
+						{{ field.value }}
+					{% else %}
+						<i>unset</i>
+					{% endif %}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</li>
+	{% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

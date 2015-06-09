@@ -4,6 +4,7 @@ import thumbs
 import django.contrib.auth.models
 import base64
 import logging
+import audit_log.models.managers
 
 class Location(mptt.models.MPTTModel):
     parent = mptt.models.TreeForeignKey(
@@ -19,6 +20,7 @@ class Location(mptt.models.MPTTModel):
             s.parent.full_name) or None)
     item_count      = property(lambda s : s.item_set.count() + sum([\
             c.item_count for c in s.children.all()] + [0]))
+    audit_log       = audit_log.models.managers.AuditLog()
 
     def __unicode__(self):
         return self.full_name
@@ -47,6 +49,7 @@ class Location(mptt.models.MPTTModel):
 
 class ArticleType(models.Model):
     name                = models.CharField(max_length=64, unique=True)
+    audit_log           = audit_log.models.managers.AuditLog()
 
     def __unicode__(self):
         return self.name
@@ -66,6 +69,7 @@ class Item(models.Model):
             django.contrib.auth.models.User, null=True, blank=True)
     contents            = models.ForeignKey(Location, null=True,
             blank=True, related_name='parent_item')
+    audit_log           = audit_log.models.managers.AuditLog()
 
     @property
     def photo(self):
@@ -90,6 +94,7 @@ class Photo(models.Model):
                             upload_to='photos', sizes=(
                                 (100,100),(400,400)), fit=True)
     order               = models.PositiveIntegerField(default=0)
+    audit_log           = audit_log.models.managers.AuditLog()
 
     @property
     def data_url(self):

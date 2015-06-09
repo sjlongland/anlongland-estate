@@ -145,6 +145,36 @@ def item(request, item_id):
     else:
         next_item = None
 
+    if request.user.is_superuser:
+        def _format_entry(le):
+            if le.action_type == 'D':
+                action = 'deleted'
+                state = None
+            elif le.action_type in 'IU':
+                if le.action_type == 'I':
+                    action = 'created'
+                else:
+                    action = 'updated'
+                def _format_change(field):
+                    try:
+                        value = getattr(le, field)
+                    except:
+                        value = '???'
+                    return dict(field=field, value=value)
+                state = map(_format_change, sorted([
+                            'code', 'location', 'article_type',
+                            'name', 'description', 'claimant',
+                            'contents']))
+            return {
+                    'date': le.action_date,
+                    'user': le.action_user,
+                    'action': action,
+                    'state': state,
+            }
+        audit_log = map(_format_entry, item.audit_log.all())
+    else:
+        audit_log = None
+
     return render(request, 'estatedb/item.html', {
         'title': u'Item %s: %s' % (item.code, item.name),
         'prev_item': prev_item,
@@ -154,7 +184,8 @@ def item(request, item_id):
         'unclaimed': unclaimed,
         'mine': mine,
         'photos': item.photo_set.all(),
-        })
+        'audit_log': audit_log,
+    })
 
 def logout(request):
     return django.contrib.auth.views.logout(request,

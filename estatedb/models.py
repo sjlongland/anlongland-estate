@@ -20,7 +20,7 @@ class Location(mptt.models.MPTTModel):
             s.parent.full_name) or None)
     item_count      = property(lambda s : s.item_set.count() + sum([\
             c.item_count for c in s.children.all()] + [0]))
-    audit_log       = audit_log.models.managers.AuditLog()
+    #audit_log       = audit_log.models.managers.AuditLog()
 
     def __unicode__(self):
         return self.full_name

@@ -1,3 +1,5 @@
 *.pyc
 *.pyo
 .*.swp
+media/photos/*.jpg
+media/photos/*.JPG

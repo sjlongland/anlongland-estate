@@ -20,11 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '9x6__*&mvpd!cmyll0*cu@&g3uikv@)1c)l!sdbf_q2xwxffkm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['estate.longlandclan.id.au']
 
 
 # Application definition
@@ -90,3 +90,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = "/home/stuartl/estate/static"
 MEDIA_URL  = 'media/'
 MEDIA_ROOT = "/home/stuartl/estate/media"
+
+LOGIN_REDIRECT_URL="/"
